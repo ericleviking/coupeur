@@ -578,7 +578,7 @@
                 const diviseur = optionValues[selectedCadence];
                 nombreHeures = piquesRestantes / diviseur;
             }
-            document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2);
+            document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2).replace('.', ',');
             
             // Calcul de l'heure de coupe et période
             updateFinishTime(nombreHeures);
