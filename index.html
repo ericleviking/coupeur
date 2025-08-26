@@ -500,7 +500,7 @@
                     <div class="period-label" id="periodLabel"></div>
                     <div class="finish-time-center">
                         <div class="calc-label">Heure de coupe</div>
-                        <div class="time-value" id="heureCoupe">--:--</div>
+                        <div class="time-value" id="heureCoupe">-- h --</div>
                     </div>
                     <div class="finish-time-spacer"></div>
                 </div>
@@ -604,7 +604,7 @@
             const heureFin = new Date(maintenant.getTime() + (heures * 60 + minutes) * 60000);
             
             // Formatage de l'heure
-            const heureFormatee = heureFin.getHours().toString().padStart(2, '0') + ':' + 
+            const heureFormatee = heureFin.getHours().toString().padStart(2, '0') + ' h ' + 
                                  heureFin.getMinutes().toString().padStart(2, '0');
             heureCoupeEl.textContent = heureFormatee;
             
