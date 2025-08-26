@@ -460,8 +460,8 @@
 
             <div class="calc-row">
                 <div class="calc-item piques">
-                    <div class="calc-label">Piques restant</div>
-                    <div class="calc-value" id="piquesRestant">0</div>
+                    <div class="calc-label">Piques restants</div>
+                    <div class="calc-value" id="piquesRestants">0</div>
                 </div>
                 <div class="calc-item cadence">
                     <div class="calc-label">Cadence</div>
@@ -569,14 +569,14 @@
             const selectedCadence = document.getElementById('cadenceSelect').value;
             
             // Calcul des piques restant
-            const piquesRestant = handValue - machineValue;
-            document.getElementById('piquesRestant').textContent = piquesRestant;
+            const piquesRestants = handValue - machineValue;
+            document.getElementById('piquesRestants').textContent = piquesRestants;
             
             // Calcul des heures restantes
             let nombreHeures = 0;
-            if (piquesRestant > 0) {
+            if (piquesRestants > 0) {
                 const diviseur = optionValues[selectedCadence];
-                nombreHeures = piquesRestant / diviseur;
+                nombreHeures = piquesRestants / diviseur;
             }
             document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2);
             
