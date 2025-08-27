@@ -1,726 +1,306 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coupeur - Belt-Tech</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        .app-header {
-            background-color: #2196F3;
-            color: white;
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .app-header .icon {
-            margin-right: 8px;
-            font-size: 20px;
-        }
-
-        .container {
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            padding-bottom: 0;
-        }
-
-        .input-section {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .input-card {
-            flex: 1;
-            padding: 16px;
-            border: 2px solid;
-            border-radius: 12px;
-            background-color: white;
-        }
-
-        .input-card.feuille {
-            border-color: #FF9800;
-            background-color: #FFF3E0;
-        }
-
-        .input-card.metier {
-            border-color: #4CAF50;
-            background-color: #E8F5E0;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-        }
-
-        .card-header .icon {
-            margin-right: 8px;
-            font-size: 18px;
-        }
-
-        .card-title {
-            font-size: 14px;
-            font-weight: bold;
-            text-align: center;
-            flex: 1;
-        }
-
-        .feuille .card-title {
-            color: #F57C00;
-        }
-
-        .metier .card-title {
-            color: #388E3C;
-        }
-
-        .input-field {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            background-color: white;
-            margin-bottom: 12px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-            cursor: pointer;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-        }
-
-        .btn.feuille {
-            background-color: #FF9800;
-        }
-
-        .btn.feuille.secondary {
-            background-color: #FFB74D;
-        }
-
-        .btn.metier {
-            background-color: #4CAF50;
-        }
-
-        .btn.metier.secondary {
-            background-color: #81C784;
-        }
-
-        .calculations-section {
-            background-color: #F3E5F5;
-            border: 2px solid #9C27B0;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .section-header .icon {
-            margin-right: 8px;
-            color: #7B1FA2;
-            font-size: 18px;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: #7B1FA2;
-        }
-
-        .calc-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .calc-item {
-            padding: 12px 16px;
-            background-color: white;
-            border: 1px solid #CE93D8;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .calc-item.piques {
-            flex: 5;
-        }
-
-        .calc-item.cadence {
-            flex: 3;
-        }
-
-        .calc-label {
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-
-        .calc-value {
-            font-size: 20px;
-            font-weight: bold;
-            color: #9C27B0;
-        }
-
-        .dropdown {
-            width: 100%;
-            padding: 6px 4px;
-            border: 1px solid #CE93D8;
-            border-radius: 4px;
-            font-size: 12px;
-            background-color: white;
-            text-align: center;
-        }
-
-        .hours-remaining {
-            width: 100%;
-            padding: 12px 16px;
-            background-color: white;
-            border: 1px solid #CE93D8;
-            border-radius: 8px;
-            text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .hours-remaining .calc-label {
-            color: #000;
-        }
-
-        .hours-remaining .calc-value {
-            font-size: 18px;
-            color: #000;
-        }
-
-        .finish-time {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .finish-time-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .period-label {
-            width: 40px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
-        .finish-time-center {
-            flex: 1;
-            text-align: center;
-        }
-
-        .finish-time-center .calc-label {
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .finish-time-center .time-value {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .finish-time-spacer {
-            width: 40px;
-        }
-
-        .strikethrough {
-            text-decoration: line-through;
-            text-decoration-thickness: 3px;
-        }
-
-        .green-bg {
-            background-color: #C8E6C9;
-            color: white;
-        }
-
-        .orange-bg {
-            background-color: #FF9800;
-            color: black;
-        }
-
-        .red-bg {
-            background-color: #DC3545;
-            color: white;
-        }
-
-        .purple-bg {
-            background-color: #7B1FA2;
-            color: white;
-        }
-
-        .blue-bg {
-            background-color: #2196F3;
-            color: white;
-        }
-
-        .coupe-manquante-section {
-            background-color: #E3F2FD;
-            border: 2px solid #2196F3;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 24px;
-        }
-
-        .coupe-manquante-section .section-header .icon {
-            color: #1976D2;
-        }
-
-        .coupe-manquante-section .section-title {
-            color: #1976D2;
-        }
-
-        .coupe-inputs {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .coupe-input-group {
-            flex: 1;
-        }
-
-        .coupe-input-label {
-            font-size: 12px;
-            font-weight: bold;
-            color: #1976D2;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .btn.blue {
-            background-color: #2196F3;
-        }
-
-        .btn.blue.secondary {
-            background-color: #64B5F6;
-        }
-
-        .footer {
-            background-color: #E3F2FD;
-            border-radius: 8px;
-            padding: 12px;
-            text-align: center;
-            margin-bottom: 70px;
-        }
-
-        .footer-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 4px;
-        }
-
-        .footer-title .icon {
-            margin-right: 8px;
-        }
-
-        .snackbar {
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            right: 20px;
-            padding: 16px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 1000;
-            display: none;
-            text-align: center;
-        }
-
-        .snackbar.success {
-            background-color: #4CAF50;
-        }
-
-        .snackbar.warning {
-            background-color: #FF9800;
-        }
-
-        .snackbar.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* Responsive design */
-        @media (max-width: 480px) {
-            .container {
-                padding: 10px;
-            }
-
-            .input-section {
-                gap: 10px;
-            }
-
-            .calc-row {
-                gap: 8px;
-            }
-
-            .coupe-inputs {
-                gap: 10px;
-            }
-
-            .dropdown {
-                font-size: 9px;
-                padding: 4px 2px;
-            }
-
-            .calc-item.cadence {
-                min-width: 0;
-            }
-
-            .calc-label {
-                font-size: 11px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coupeur - Belt-Tech</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box;}
+body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5f5f5;color:#333;}
+.app-header {background:#2196F3;color:white;padding:16px 20px;display:flex;align-items:center;box-shadow:0 2px 4px rgba(0,0,0,0.1);}
+.app-header .icon {margin-right:8px;font-size:20px;}
+.container {padding:20px;max-width:800px;margin:0 auto;padding-bottom:0;}
+.input-section {display:flex;gap:16px;margin-bottom:24px;}
+.input-card {flex:1;padding:16px;border:2px solid;border-radius:12px;background:white;}
+.input-card.feuille {border-color:#FF9800;background:#FFF3E0;}
+.input-card.metier {border-color:#4CAF50;background:#E8F5E0;}
+.card-header {display:flex;align-items:center;justify-content:center;margin-bottom:12px;}
+.card-header .icon {margin-right:8px;font-size:18px;}
+.card-title {font-size:14px;font-weight:bold;text-align:center;flex:1;}
+.feuille .card-title {color:#F57C00;}
+.metier .card-title {color:#388E3C;}
+.input-field {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  margin-bottom: 12px;
+  
+  box-sizing: border-box; /* évite que le padding réduise l'espace dispo */
+  white-space: normal;    /* permet au placeholder d’aller à la ligne */
+  overflow: visible;      /* empêche le rognage */
+  text-overflow: clip;    /* supprime les "..." automatiques */
+}
+.btn {width:100%;padding:8px;border:none;border-radius:4px;font-size:12px;font-weight:bold;color:white;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:center;gap:4px;}
+.btn.feuille {background:#FF9800;}
+.btn.feuille.secondary {background:#FFB74D;}
+.btn.metier {background:#4CAF50;}
+.btn.metier.secondary {background:#81C784;}
+.calculations-section {background:#F3E5F5;border:2px solid #9C27B0;border-radius:12px;padding:16px;margin-bottom:24px;}
+.section-header {display:flex;align-items:center;margin-bottom:16px;}
+.section-header .icon {margin-right:8px;color:#7B1FA2;font-size:18px;}
+.section-title {font-size:16px;font-weight:bold;color:#7B1FA2;}
+.calc-row {display:flex;gap:12px;margin-bottom:16px;}
+.calc-item {padding:12px 16px;background:white;border:1px solid #CE93D8;border-radius:8px;text-align:center;}
+.calc-item.piques {flex:5;}
+.calc-item.cadence {flex:3;}
+.calc-label {font-size:12px;font-weight:bold;margin-bottom:4px;}
+.calc-value {font-size:20px;font-weight:bold;color:#9C27B0;}
+.dropdown {width:100%;padding:6px 4px;border:1px solid #CE93D8;border-radius:4px;font-size:12px;background:white;text-align:center;}
+.hours-remaining {width:100%;padding:12px 16px;background:white;border:1px solid #CE93D8;border-radius:8px;text-align:center;margin-bottom:12px;}
+.hours-remaining .calc-label {color:#000;}
+.hours-remaining .calc-value {font-size:18px;color:#000;}
+.finish-time {width:100%;padding:12px 16px;border-radius:8px;position:relative;}
+.finish-time-content {display:flex;align-items:center;}
+.period-label {width:40px;font-size:10px;font-weight:bold;}
+.finish-time-center {flex:1;text-align:center;}
+.finish-time-center .calc-label {font-size:12px;font-weight:bold;}
+.finish-time-center .time-value {font-size:24px;font-weight:bold;}
+.finish-time-spacer {width:40px;}
+.strikethrough {text-decoration:line-through;text-decoration-thickness:3px;}
+.green-bg {background:#C8E6C9;color:white;}
+.orange-bg {background:#FF9800;color:black;}
+.red-bg {background:#DC3545;color:white;}
+.purple-bg {background:#7B1FA2;color:white;}
+.blue-bg {background:#2196F3;color:white;}
+.coupe-manquante-section {background:#E3F2FD;border:2px solid #2196F3;border-radius:12px;padding:16px;margin-bottom:24px;}
+.coupe-manquante-section .section-header .icon {color:#1976D2;}
+.coupe-manquante-section .section-title {color:#1976D2;}
+.coupe-inputs {display:flex;gap:16px;margin-bottom:16px;}
+.coupe-input-group {flex:1;}
+.coupe-input-label {font-size:12px;font-weight:bold;color:#1976D2;margin-bottom:8px;text-align:center;}
+.btn.blue {background:#2196F3;}
+.btn.blue.secondary {background:#64B5F6;}
+.footer {background:#E3F2FD;border-radius:8px;padding:12px;text-align:center;margin-bottom:70px;}
+.footer-title {display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.footer-title .icon {margin-right:8px;}
+.snackbar {position:fixed;top:70px;left:20px;right:20px;padding:16px;border-radius:8px;color:white;font-weight:bold;z-index:1000;display:none;text-align:center;}
+.snackbar.success {background:#4CAF50;}
+.snackbar.warning {background:#FF9800;}
+.snackbar.show {display:block;animation:slideDown 0.3s ease;}
+@keyframes slideDown {from{transform:translateY(-100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+/* Responsive design */
+@media (max-width:480px){.container{padding:10px;}.input-section{gap:10px;}.calc-row{gap:8px;}.coupe-inputs{gap:10px;}.dropdown{font-size:9px;padding:4px 2px;}.calc-item.cadence{min-width:0;}.calc-label{font-size:11px;}}
+
+/* NUMPAD STYLES */
+#numpad {display:none;position:fixed;bottom:0;left:0;width:100%;background:#ddd;padding:10px;box-shadow:0 -2px 10px rgba(0,0,0,0.2);z-index:10000;border-top-left-radius:12px;border-top-right-radius:12px;}
+.numpad-row {display:flex;justify-content:center;gap:8px;margin-bottom:8px;}
+.numpad-btn {flex:1;padding:16px;border:none;border-radius:8px;background:white;font-size:18px;font-weight:bold;text-align:center;cursor:pointer;user-select:none;}
+.numpad-btn.special {background:#bbb;}
+
+.numpad-btn {
+  transition: transform 0.1s ease, background 0.1s ease;
+}
+
+.numpad-btn:active {
+  transform: scale(1.2);
+  background: #eee;
+}
+</style>
 </head>
 <body>
-    <div class="app-header">
-        <span class="icon">✂️</span>
-        <span>Coupeur - Belt-Tech</span>
-    </div>
 
-    <div class="container">
-        <!-- Feuille et Métier côte à côte -->
-        <div class="input-section">
-            <!-- Feuille -->
-            <div class="input-card feuille">
-                <div class="card-header">
-                    <span class="icon">✏️</span>
-                    <div class="card-title">FEUILLE</div>
-                </div>
-                <input type="number" id="handInput" class="input-field" placeholder="Prochaine coupe...">
-                <button class="btn feuille secondary" onclick="clearInput('hand')">
-                    <span>🔄</span>
-                    Reset
-                </button>
-            </div>
+<div class="app-header"><span class="icon">✂️</span><span>Coupeur - Belt-Tech</span></div>
 
-            <!-- Métier -->
-            <div class="input-card metier">
-                <div class="card-header">
-                    <span class="icon">⚙️</span>
-                    <div class="card-title">MÉTIER</div>
-                </div>
-                <input type="number" id="machineInput" class="input-field" placeholder="Piques...">
-                <button class="btn metier secondary" onclick="clearInput('machine')">
-                    <span>🔄</span>
-                    Reset
-                </button>
-            </div>
-        </div>
+<div class="container">
+<!-- Feuille et Métier -->
+<div class="input-section">
+<div class="input-card feuille">
+<div class="card-header"><span class="icon">✏️</span><div class="card-title">FEUILLE</div></div>
+<input type="number" id="handInput" class="input-field" placeholder="Prochaine coupe..." readonly>
+<button class="btn feuille secondary" onclick="clearInput('hand')"><span>🔄</span>Reset</button>
+</div>
 
-        <!-- Calculs -->
-        <div class="calculations-section">
-            <div class="section-header">
-                <span class="icon">📊</span>
-                <div class="section-title">CALCULS DE COUPE</div>
-            </div>
+<div class="input-card metier">
+<div class="card-header"><span class="icon">⚙️</span><div class="card-title">MÉTIER</div></div>
+<input type="number" id="machineInput" class="input-field" placeholder="Piques..." readonly>
+<button class="btn metier secondary" onclick="clearInput('machine')"><span>🔄</span>Reset</button>
+</div>
+</div>
 
-            <div class="calc-row">
-                <div class="calc-item piques">
-                    <div class="calc-label">Piques restantes</div>
-                    <div class="calc-value" id="piquesRestantes">0</div>
-                </div>
-                <div class="calc-item cadence">
-                    <div class="calc-label">Cadence</div>
-                    <select class="dropdown" id="cadenceSelect" onchange="updateCalculations()">
-                        <option value="2000">2000 (120)</option>
-                        <option value="1900">1900 (114)</option>
-                        <option value="1850">1850 (111)</option>
-                        <option value="1800">1800 (108)</option>
-                        <option value="1750">𝟏𝟕𝟓𝟎 (𝟏𝟎𝟓)</option>
-                        <option value="1700" selected>𝟏𝟕𝟎𝟎 (𝟏𝟎𝟐)</option>
-                        <option value="1650">1650 (99)</option>
-                        <option value="1600">𝟏𝟔𝟎𝟎 (𝟗𝟔)</option>
-                        <option value="1500">𝟏𝟓𝟎𝟎 (𝟗𝟎)</option>
-                        <option value="1400">1400 (84)</option>
-                        <option value="1300">1300 (78)</option>
-                        <option value="1150">1150 (69)</option>
-                        <option value="1000">1000 (60)</option>
-                        <option value="900">𝟗𝟎𝟎 (𝟓𝟒)</option>
-                        <option value="800">800 (48)</option>
-                        <option value="750">750 (45)</option>
-                        <option value="700">700 (42)</option>
-                        <option value="450">450 (27)</option>
-                        <option value="200">200 (12)</option>
-                        <option value="165">165 (9)</option>
-                    </select>
-                </div>
-            </div>
+<!-- Calculations section -->
+<div class="calculations-section">
+<div class="section-header"><span class="icon">📊</span><div class="section-title">CALCULS DE COUPE</div></div>
+<div class="calc-row">
+<div class="calc-item piques"><div class="calc-label">Piques restantes</div><div class="calc-value" id="piquesRestantes">0</div></div>
+<div class="calc-item cadence"><div class="calc-label">Cadence</div>
+<select class="dropdown" id="cadenceSelect" onchange="updateCalculations()">
+<option value="2000">2000 (120)</option><option value="1900">1900 (114)</option><option value="1850">1850 (111)</option><option value="1800">1800 (108)</option><option value="1750">1750 (105)</option>
+<option value="1700" selected>1700 (102)</option><option value="1650">1650 (99)</option><option value="1600">1600 (96)</option><option value="1500">1500 (90)</option>
+<option value="1400">1400 (84)</option><option value="1300">1300 (78)</option><option value="1150">1150 (69)</option><option value="1000">1000 (60)</option>
+<option value="900">900 (54)</option><option value="800">800 (48)</option><option value="750">750 (45)</option><option value="700">700 (42)</option>
+<option value="450">450 (27)</option><option value="200">200 (12)</option><option value="165">165 (9)</option>
+</select>
+</div>
+</div>
 
-            <div class="hours-remaining">
-                <div class="calc-label">Heures restantes</div>
-                <div class="calc-value" id="heuresRestantes">0.00</div>
-            </div>
+<div class="hours-remaining"><div class="calc-label">Heures restantes</div><div class="calc-value" id="heuresRestantes">0,00</div></div>
+<div class="finish-time" id="finishTimeContainer">
+<div class="finish-time-content"><div class="period-label" id="periodLabel"></div>
+<div class="finish-time-center"><div class="calc-label">Heure de coupe</div><div class="time-value" id="heureCoupe">-- h --</div></div>
+<div class="finish-time-spacer"></div></div></div>
+</div>
 
-            <div class="finish-time" id="finishTimeContainer">
-                <div class="finish-time-content">
-                    <div class="period-label" id="periodLabel"></div>
-                    <div class="finish-time-center">
-                        <div class="calc-label">Heure de coupe</div>
-                        <div class="time-value" id="heureCoupe">-- h --</div>
-                    </div>
-                    <div class="finish-time-spacer"></div>
-                </div>
-            </div>
-        </div>
+<!-- Coupe Manquante -->
+<div class="coupe-manquante-section">
+<div class="section-header"><span class="icon">➕</span><div class="section-title">COUPE MANQUANTE</div></div>
+<div class="coupe-inputs">
+<div class="coupe-input-group"><div class="coupe-input-label">Duites coupées</div><input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe..." readonly></div>
+<div class="coupe-input-group"><div class="coupe-input-label">Duites/coupe</div><input type="number" id="duitesParCoupeInput" class="input-field" placeholder="Haut de feuille..." readonly></div>
+</div>
+<button class="btn blue" onclick="calculerCoupeManquante()"><span>📊</span>Calculer</button>
+<button class="btn blue secondary" onclick="resetCoupeManquante()"><span>🔄</span>Reset</button>
+</div>
 
-        <!-- Coupe Manquante -->
-        <div class="coupe-manquante-section">
-            <div class="section-header">
-                <span class="icon">➕</span>
-                <div class="section-title">COUPE MANQUANTE</div>
-            </div>
+<!-- Footer -->
+<div class="footer"><div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.1</span></div><div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div></div>
+</div>
 
-            <div class="coupe-inputs">
-                <div class="coupe-input-group">
-                    <div class="coupe-input-label">Duites coupées</div>
-                    <input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe...">
-                </div>
-                <div class="coupe-input-group">
-                    <div class="coupe-input-label">Duites/coupe</div>
-                    <input type="number" id="duitesParCoupeInput" class="input-field" placeholder="Haut de feuille...">
-                </div>
-            </div>
+<!-- Snackbar -->
+<div class="snackbar" id="snackbar"></div>
 
-            <button class="btn blue" onclick="calculerCoupeManquante()">
-                <span>📊</span>
-                Calculer
-            </button>
-            <button class="btn blue secondary" onclick="resetCoupeManquante()">
-                <span>🔄</span>
-                Reset
-            </button>
-        </div>
+<!-- Numpad -->
+<div id="numpad">
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('7')">7</button><button class="numpad-btn" onclick="appendNumpad('8')">8</button><button class="numpad-btn" onclick="appendNumpad('9')">9</button></div>
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('4')">4</button><button class="numpad-btn" onclick="appendNumpad('5')">5</button><button class="numpad-btn" onclick="appendNumpad('6')">6</button></div>
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('1')">1</button><button class="numpad-btn" onclick="appendNumpad('2')">2</button><button class="numpad-btn" onclick="appendNumpad('3')">3</button></div>
+  <div class="numpad-row"><button class="numpad-btn special" onclick="backspaceNumpad()">←</button><button class="numpad-btn" onclick="appendNumpad('0')">0</button><button class="numpad-btn special" onclick="closeNumpad()">✔</button></div>
+</div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-title">
-                <span class="icon">✂️</span>
-                <span style="font-weight: bold; font-size: 14px;">Coupeur, version 1.1</span>
-            </div>
-            <div style="font-size: 12px; font-weight: bold;">
-                Programmé par Eric Delorme
-            </div>
-        </div>
-    </div>
+<script>
+const optionValues = {
+  '2000':120,'1900':114,'1850':111,'1800':108,'1750':105,'1700':102,
+  '1650':99,'1600':96,'1500':90,'1400':84,'1300':78,'1150':69,
+  '1000':60,'900':54,'800':48,'750':45,'700':42,'450':27,'200':12,'165':9
+};
 
-    <!-- Snackbar pour les notifications -->
-    <div class="snackbar" id="snackbar"></div>
+// Inputs
+let activeInput = null;
+['handInput','machineInput','duitesCoupeesInput','duitesParCoupeInput'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('focus', (e) => {
+    activeInput = el;
+    showNumpad();
+    e.stopPropagation(); // empêche le clique global de fermer le numpad immédiatement
+  });
+});
 
-    <script>
-        // Configuration des cadences
-        const optionValues = {
-            '2000': 120, '1900': 114, '1850': 111, '1800': 108, '1750': 105,
-            '1700': 102, '1650': 99, '1600': 96, '1500': 90, '1400': 84,
-            '1300': 78, '1150': 69, '1000': 60, '900': 54, '800': 48,
-            '750': 45, '700': 42, '450': 27, '200': 12, '165': 9
-        };
+// Numpad fonctions
+function showNumpad(){ document.getElementById('numpad').style.display='block'; }
+function closeNumpad(){ 
+  document.getElementById('numpad').style.display='none'; 
+  activeInput = null; 
+}
+function appendNumpad(val){ if(!activeInput) return; activeInput.value += val; updateCalculations(); }
+function backspaceNumpad(){ if(!activeInput) return; activeInput.value = activeInput.value.slice(0,-1); updateCalculations(); }
 
-        // Écouteurs d'événements pour les inputs
-        document.getElementById('handInput').addEventListener('input', updateCalculations);
-        document.getElementById('machineInput').addEventListener('input', updateCalculations);
+// Calculs
+function updateCalculations(){
+  const handValue = parseInt(document.getElementById('handInput').value) || 0;
+  const machineValue = parseInt(document.getElementById('machineInput').value) || 0;
+  const selectedCadence = document.getElementById('cadenceSelect').value;
+  const piquesRestantes = handValue - machineValue;
+  document.getElementById('piquesRestantes').textContent = piquesRestantes;
+  
+  let nombreHeures = 0;
+  if(piquesRestantes > 0){ nombreHeures = piquesRestantes / optionValues[selectedCadence]; }
+  document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2).replace('.',',');
+  updateFinishTime(nombreHeures);
+}
 
-        function updateCalculations() {
-            const handValue = parseInt(document.getElementById('handInput').value) || 0;
-            const machineValue = parseInt(document.getElementById('machineInput').value) || 0;
-            const selectedCadence = document.getElementById('cadenceSelect').value;
-            
-            // Calcul des piques restantes
-            const piquesRestantes = handValue - machineValue;
-            document.getElementById('piquesRestantes').textContent = piquesRestantes;
-            
-            // Calcul des heures restantes
-            let nombreHeures = 0;
-            if (piquesRestantes > 0) {
-                const diviseur = optionValues[selectedCadence];
-                nombreHeures = piquesRestantes / diviseur;
-            }
-            document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2).replace('.', ',');
-            
-            // Calcul de l'heure de coupe et période
-            updateFinishTime(nombreHeures);
-        }
+function updateFinishTime(nombreHeures){
+  const finishTimeContainer = document.getElementById('finishTimeContainer');
+  const periodLabel = document.getElementById('periodLabel');
+  const heureCoupeEl = document.getElementById('heureCoupe');
 
-        function updateFinishTime(nombreHeures) {
-            const finishTimeContainer = document.getElementById('finishTimeContainer');
-            const periodLabel = document.getElementById('periodLabel');
-            const heureCoupeEl = document.getElementById('heureCoupe');
-            
-            if (nombreHeures <= 0) {
-                finishTimeContainer.className = 'finish-time purple-bg';
-                periodLabel.textContent = '';
-                heureCoupeEl.textContent = '-- h --';
-                heureCoupeEl.className = 'time-value';
-                return;
-            }
-            
-            const maintenant = new Date();
-            const heures = Math.floor(nombreHeures);
-            const minutes = Math.round((nombreHeures - heures) * 60);
-            
-            const heureFin = new Date(maintenant.getTime() + (heures * 60 + minutes) * 60000);
-            
-            // Formatage de l'heure
-            const heureFormatee = heureFin.getHours().toString().padStart(2, '0') + ' h ' + 
-                                 heureFin.getMinutes().toString().padStart(2, '0');
-            heureCoupeEl.textContent = heureFormatee;
-            
-            // Détermination de la période
-            const heure = heureFin.getHours();
-            let periode = '';
-            if (heure >= 7 && heure < 15) {
-                periode = 'JOUR';
-            } else if (heure >= 15 && heure < 23) {
-                periode = 'SOIR';
-            } else {
-                periode = 'NUIT';
-            }
-            periodLabel.textContent = periode;
-            
-            // Détermination de la couleur de fond
-            const demainMatin7h = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate() + 1, 7, 0);
-            let shouldStrike = false;
-            
-            const heureFinHour = heureFin.getHours();
-            
-            if (heureFin.getDate() === maintenant.getDate() && heureFinHour < 15) {
-                // Même jour avant 15h (quart de jour) = VERT
-                finishTimeContainer.className = 'finish-time green-bg';
-            } else if (heureFin.getDate() === maintenant.getDate() && heureFinHour >= 15) {
-                // Même jour après 15h (quart de soir) = ORANGE
-                finishTimeContainer.className = 'finish-time orange-bg';
-            } else if ((heureFin.getDate() === maintenant.getDate() + 1 && heureFinHour < 7) || 
-                       (heureFin.getDate() === maintenant.getDate() && heureFinHour >= 23)) {
-                // Quart de nuit (23h à 7h) = BLEU
-                finishTimeContainer.className = 'finish-time blue-bg';
-            } else if (heureFin > demainMatin7h) {
-                // Après 7h le lendemain = ROUGE + rayé
-                finishTimeContainer.className = 'finish-time red-bg';
-                shouldStrike = true;
-            } else {
-                // Autres cas = ORANGE
-                finishTimeContainer.className = 'finish-time orange-bg';
-            }
-            
-            // Application du style rayé
-            heureCoupeEl.className = shouldStrike ? 'time-value strikethrough' : 'time-value';
-        }
+  if(nombreHeures <= 0){
+    finishTimeContainer.className='finish-time purple-bg';
+    periodLabel.textContent='';
+    heureCoupeEl.textContent='-- h --';
+    heureCoupeEl.className='time-value';
+    return;
+  }
 
-        function clearInput(type) {
-            if (type === 'hand') {
-                document.getElementById('handInput').value = '';
-            } else {
-                document.getElementById('machineInput').value = '';
-            }
-            updateCalculations();
-        }
+  const maintenant = new Date();
+  const heures = Math.floor(nombreHeures);
+  const minutes = Math.round((nombreHeures - heures) * 60);
+  const heureFin = new Date(maintenant.getTime() + (heures*60 + minutes)*60000);
+  const heureFormatee = heureFin.getHours().toString().padStart(2,'0') + ' h ' + heureFin.getMinutes().toString().padStart(2,'0');
+  heureCoupeEl.textContent = heureFormatee;
 
-        function calculerCoupeManquante() {
-            const duitesCoupees = parseInt(document.getElementById('duitesCoupeesInput').value) || 0;
-            const duitesParCoupe = parseInt(document.getElementById('duitesParCoupeInput').value) || 0;
-            
-            if (duitesCoupees > 0 && duitesParCoupe > 0) {
-                const total = duitesCoupees + duitesParCoupe;
-                
-                // Mettre à jour les champs
-                document.getElementById('handInput').value = total.toString();
-                document.getElementById('machineInput').value = '';
-                document.getElementById('duitesCoupeesInput').value = '';
-                document.getElementById('duitesParCoupeInput').value = '';
-                
-                // Recalculer
-                updateCalculations();
-                
-                // Remonter en haut - méthodes multiples pour mobile
-                try {
-                    // Méthode 1: scroll vers le haut
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                    
-                    // Méthode 2: si la première ne marche pas, forcer sans animation
-                    setTimeout(() => {
-                        window.scrollTo(0, 0);
-                        document.documentElement.scrollTop = 0;
-                        document.body.scrollTop = 0;
-                    }, 100);
-                    
-                    // Méthode 3: focus sur le champ feuille pour attirer l'attention
-                    setTimeout(() => {
-                        const handInput = document.getElementById('handInput');
-                        handInput.focus();
-                        handInput.blur(); // Retirer le focus immédiatement
-                    }, 200);
-                    
-                } catch (e) {
-                    console.log('Scroll error:', e);
-                }
-                
-                // Afficher notification
-                showSnackbar(`✅ Total calculé: ${total} ajouté à la Feuille`, 'success');
-            } else {
-                showSnackbar('⚠️ Veuillez entrer des valeurs valides dans les deux champs', 'warning');
-            }
-        }
+  const heure = heureFin.getHours();
+  let periode = '';
+  if(heure >= 7 && heure < 15) periode='JOUR';
+  else if(heure >= 15 && heure < 23) periode='SOIR';
+  else periode='NUIT';
+  periodLabel.textContent = periode;
 
-        function resetCoupeManquante() {
-            document.getElementById('duitesCoupeesInput').value = '';
-            document.getElementById('duitesParCoupeInput').value = '';
-        }
+  const demainMatin7h = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate()+1, 7, 0);
+  let shouldStrike = false;
+  const heureFinHour = heureFin.getHours();
 
-        function showSnackbar(message, type) {
-            const snackbar = document.getElementById('snackbar');
-            snackbar.textContent = message;
-            snackbar.className = `snackbar ${type} show`;
-            
-            setTimeout(() => {
-                snackbar.className = 'snackbar';
-            }, 2000);
-        }
+  if(heureFin.getDate() === maintenant.getDate() && heureFinHour < 15) finishTimeContainer.className='finish-time green-bg';
+  else if(heureFin.getDate() === maintenant.getDate() && heureFinHour >= 15) finishTimeContainer.className='finish-time orange-bg';
+  else if((heureFin.getDate() === maintenant.getDate()+1 && heureFinHour < 7)||(heureFin.getDate() === maintenant.getDate() && heureFinHour >= 23)) finishTimeContainer.className='finish-time blue-bg';
+  else if(heureFin > demainMatin7h){ finishTimeContainer.className='finish-time red-bg'; shouldStrike=true; }
+  else finishTimeContainer.className='finish-time orange-bg';
 
-        // Initialisation
-        updateCalculations();
-    </script>
+  heureCoupeEl.className = shouldStrike ? 'time-value strikethrough' : 'time-value';
+}
+
+function clearInput(type){
+  if(type==='hand') document.getElementById('handInput').value='';
+  else document.getElementById('machineInput').value='';
+  updateCalculations();
+}
+
+function calculerCoupeManquante(){
+  const duitesCoupees = parseInt(document.getElementById('duitesCoupeesInput').value) || 0;
+  const duitesParCoupe = parseInt(document.getElementById('duitesParCoupeInput').value) || 0;
+  if(duitesCoupees > 0 && duitesParCoupe > 0){
+    const total = duitesCoupees + duitesParCoupe;
+    document.getElementById('handInput').value = total.toString();
+    document.getElementById('machineInput').value = '';
+    document.getElementById('duitesCoupeesInput').value = '';
+    document.getElementById('duitesParCoupeInput').value = '';
+    updateCalculations();
+    scrollToTop();
+    showSnackbar(`✅ Total calculé: ${total} ajouté à la Feuille`,'success');
+  }else showSnackbar('⚠️ Veuillez entrer des valeurs valides dans les deux champs','warning');
+}
+
+function resetCoupeManquante(){
+  document.getElementById('duitesCoupeesInput').value='';
+  document.getElementById('duitesParCoupeInput').value='';
+}
+
+function showSnackbar(msg,type){
+  const snackbar = document.getElementById('snackbar');
+  snackbar.textContent = msg;
+  snackbar.className = `snackbar ${type} show`;
+  setTimeout(()=>{ snackbar.className='snackbar'; },2000);
+}
+
+// Scroll vers le haut et ferme le numpad
+function scrollToTop(){
+  document.activeElement.blur(); // retire le focus
+  closeNumpad();                 // ferme le numpad
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// Fermer le numpad quand on clique ailleurs
+document.addEventListener('click', (e)=>{
+  if(activeInput && !document.getElementById('numpad').contains(e.target) && !activeInput.contains(e.target)){
+    closeNumpad();
+  }
+});
+
+updateCalculations();
+</script>
+
 </body>
 </html>
