@@ -133,6 +133,10 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 
 
 }
+body.with-numpad {
+  padding-bottom: 250px; /* adapte si ton clavier est plus haut */
+}
+
 
 /* Affecte seulement le chiffre affiché quand la liste est fermée */
 .dropdown-big-display {
@@ -218,7 +222,7 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 </div>
 
 <!-- Footer -->
-<div class="footer"><div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.2</span></div><div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div></div>
+<div class="footer"><div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.3</span></div><div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div></div>
 </div>
 
 <!-- Snackbar -->
@@ -243,17 +247,26 @@ const optionValues = {
 let activeInput = null;
 ['handInput','machineInput','duitesCoupeesInput','duitesParCoupeInput'].forEach(id => {
   const el = document.getElementById(id);
-  el.addEventListener('focus', (e) => {
+  el.addEventListener('focus', () => {
     activeInput = el;
     showNumpad();
-    e.stopPropagation(); // empêche le clique global de fermer le numpad immédiatement
   });
 });
 
 // Numpad fonctions
-function showNumpad(){ document.getElementById('numpad').style.display='block'; }
+function showNumpad() {
+  document.getElementById('numpad').style.display = 'block';
+  document.body.classList.add('with-numpad');
+  // si un input est actif, on le fait défiler en vue
+  if (activeInput) {
+    setTimeout(() => {
+      activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200); // petit délai pour laisser le padding s'appliquer
+  }
+}
 function closeNumpad(){ 
-  document.getElementById('numpad').style.display='none'; 
+  document.getElementById('numpad').style.display = 'none'; 
+  document.body.classList.remove('with-numpad'); 
   activeInput = null; 
 }
 function appendNumpad(val){ if(!activeInput) return; activeInput.value += val; updateCalculations(); }
@@ -273,45 +286,86 @@ function updateCalculations(){
   updateFinishTime(nombreHeures);
 }
 
-function updateFinishTime(nombreHeures){
+function updateFinishTime(nombreHeures) {
   const finishTimeContainer = document.getElementById('finishTimeContainer');
   const periodLabel = document.getElementById('periodLabel');
   const heureCoupeEl = document.getElementById('heureCoupe');
 
-  if(nombreHeures <= 0){
-    finishTimeContainer.className='finish-time purple-bg';
-    periodLabel.textContent='';
-    heureCoupeEl.textContent='-- h --';
-    heureCoupeEl.className='time-value';
+  if (nombreHeures <= 0) {
+    finishTimeContainer.className = 'finish-time purple-bg';
+    periodLabel.textContent = '';
+    heureCoupeEl.textContent = '-- h --';
+    heureCoupeEl.className = 'time-value';
     return;
   }
 
   const maintenant = new Date();
   const heures = Math.floor(nombreHeures);
   const minutes = Math.round((nombreHeures - heures) * 60);
-  const heureFin = new Date(maintenant.getTime() + (heures*60 + minutes)*60000);
-  const heureFormatee = heureFin.getHours().toString().padStart(2,'0') + ' h ' + heureFin.getMinutes().toString().padStart(2,'0');
+  const heureFin = new Date(maintenant.getTime() + (heures * 60 + minutes) * 60000);
+
+  const heureFormatee = heureFin.getHours().toString().padStart(2, '0') +
+    ' h ' +
+    heureFin.getMinutes().toString().padStart(2, '0');
   heureCoupeEl.textContent = heureFormatee;
 
   const heure = heureFin.getHours();
-  let periode = '';
-  if(heure >= 7 && heure < 15) periode='JOUR';
-  else if(heure >= 15 && heure < 23) periode='SOIR';
-  else periode='NUIT';
-  periodLabel.textContent = periode;
 
-  const demainMatin7h = new Date(maintenant.getFullYear(), maintenant.getMonth(), maintenant.getDate()+1, 7, 0);
+  // Définir la limite de fin de journée (07h)
+  let finDeJournee;
+  if (maintenant.getHours() < 7) {
+    // On est dans le shift de nuit → limite = aujourd'hui 07h
+    finDeJournee = new Date(
+      maintenant.getFullYear(),
+      maintenant.getMonth(),
+      maintenant.getDate(),
+      7, 0, 0
+    );
+  } else {
+    // On est dans le jour ou le soir → limite = demain 07h
+    finDeJournee = new Date(
+      maintenant.getFullYear(),
+      maintenant.getMonth(),
+      maintenant.getDate() + 1,
+      7, 0, 0
+    );
+  }
+
   let shouldStrike = false;
-  const heureFinHour = heureFin.getHours();
 
-  if(heureFin.getDate() === maintenant.getDate() && heureFinHour < 15) finishTimeContainer.className='finish-time green-bg';
-  else if(heureFin.getDate() === maintenant.getDate() && heureFinHour >= 15) finishTimeContainer.className='finish-time orange-bg';
-  else if((heureFin.getDate() === maintenant.getDate()+1 && heureFinHour < 7)||(heureFin.getDate() === maintenant.getDate() && heureFinHour >= 23)) finishTimeContainer.className='finish-time blue-bg';
-  else if(heureFin > demainMatin7h){ finishTimeContainer.className='finish-time red-bg'; shouldStrike=true; }
-  else finishTimeContainer.className='finish-time orange-bg';
+if (heureFin >= finDeJournee) {
+  // Dépasse la limite → rouge barré
+  finishTimeContainer.className = 'finish-time red-bg';
+  shouldStrike = true;
+
+  // Trouver quand même la période réelle du résultat
+  if (heure >= 7 && heure < 15) {
+    periodLabel.textContent = 'JOUR';
+  } else if (heure >= 15 && heure < 23) {
+    periodLabel.textContent = 'SOIR';
+  } else {
+    periodLabel.textContent = 'NUIT';
+  }
+
+} else {
+  // Encore dans la journée courante → appliquer les couleurs normales
+  if (heure >= 7 && heure < 15) {
+    finishTimeContainer.className = 'finish-time green-bg';
+    periodLabel.textContent = 'JOUR';
+  } else if (heure >= 15 && heure < 23) {
+    finishTimeContainer.className = 'finish-time orange-bg';
+    periodLabel.textContent = 'SOIR';
+  } else {
+    finishTimeContainer.className = 'finish-time blue-bg';
+    periodLabel.textContent = 'NUIT';
+  }
+}
+
 
   heureCoupeEl.className = shouldStrike ? 'time-value strikethrough' : 'time-value';
 }
+
+
 
 function clearInput(type){
   if(type==='hand') document.getElementById('handInput').value='';
@@ -319,20 +373,35 @@ function clearInput(type){
   updateCalculations();
 }
 
-function calculerCoupeManquante(){
-  const duitesCoupees = parseInt(document.getElementById('duitesCoupeesInput').value) || 0;
-  const duitesParCoupe = parseInt(document.getElementById('duitesParCoupeInput').value) || 0;
-  if(duitesCoupees > 0 && duitesParCoupe > 0){
-    const total = duitesCoupees + duitesParCoupe;
-    document.getElementById('handInput').value = total.toString();
-    document.getElementById('machineInput').value = '';
-    document.getElementById('duitesCoupeesInput').value = '';
-    document.getElementById('duitesParCoupeInput').value = '';
-    updateCalculations();
-    scrollToTop();
-    showSnackbar(`✅ Total calculé: ${total} ajouté à la Feuille`,'success');
-  }else showSnackbar('⚠️ Veuillez entrer des valeurs valides dans les deux champs','warning');
+function calculerCoupeManquante() {
+    const duitesCoupees = parseInt(document.getElementById('duitesCoupeesInput').value) || 0;
+    const duitesParCoupe = parseInt(document.getElementById('duitesParCoupeInput').value) || 0;
+
+    if (duitesCoupees > 0 && duitesParCoupe > 0) {
+        const total = duitesCoupees + duitesParCoupe;
+
+        // Mettre à jour le champ Feuille
+        document.getElementById('handInput').value = total.toString();
+        document.getElementById('machineInput').value = '';
+
+        // Vider les champs COUPE MANQUANTE
+        document.getElementById('duitesCoupeesInput').value = '';
+        document.getElementById('duitesParCoupeInput').value = '';
+
+        // Recalculer
+        updateCalculations();
+
+        // Monter la page vers le champ Feuille SANS toucher au focus
+        document.getElementById('handInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Afficher notification
+        showSnackbar(`✅ Total calculé: ${total} ajouté à la Feuille`, 'success');
+    } else {
+        showSnackbar('⚠️ Veuillez entrer des valeurs valides dans les deux champs', 'warning');
+    }
 }
+
+
 
 function resetCoupeManquante(){
   document.getElementById('duitesCoupeesInput').value='';
@@ -353,9 +422,10 @@ function scrollToTop(){
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-// Fermer le numpad quand on clique ailleurs
-document.addEventListener('click', (e)=>{
-  if(activeInput && !document.getElementById('numpad').contains(e.target) && !activeInput.contains(e.target)){
+// Fermer le numpad si click ailleurs (fix pour champs bas)
+document.addEventListener('mousedown', (e)=>{
+  const np = document.getElementById('numpad');
+  if(activeInput && !np.contains(e.target) && !e.target.classList.contains('input-field')){
     closeNumpad();
   }
 });
