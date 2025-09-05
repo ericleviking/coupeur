@@ -50,7 +50,27 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 .section-header .icon {margin-right:8px;color:#7B1FA2;font-size:18px;}
 .section-title {font-size:16px;font-weight:bold;color:#7B1FA2;}
 .calc-row {display:flex;gap:12px;margin-bottom:16px;}
-.calc-item {padding:12px 16px;background:white;border:1px solid #CE93D8;border-radius:8px;text-align:center;}
+.calc-item {
+  padding: 12px 16px;
+  background-color: white;
+  border: 1px solid #CE93D8;
+  border-radius: 8px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.calc-item .calc-label {
+  margin-bottom: 4px;   /* petit espace sous le titre */
+}
+
+.calc-item .calc-value {
+  flex: 1;              /* occupe l’espace restant */
+  display: flex;
+  align-items: center;  /* centre verticalement le chiffre */
+  justify-content: center;
+}
 .calc-item.piques {flex:4;}
 .calc-item.cadence {flex:4;}
 .calc-label {font-size:12px;font-weight:bold;margin-bottom:4px;}
@@ -58,7 +78,7 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 .dropdown {width:100%;padding:6px 4px;border:1px solid #CE93D8;border-radius:4px;font-size:12px;background:white;text-align:center;}
 .hours-remaining {width:100%;padding:12px 16px;background:white;border:1px solid #CE93D8;border-radius:8px;text-align:center;margin-bottom:12px;}
 .hours-remaining .calc-label {color:#000;}
-.hours-remaining .calc-value {font-size:18px;color:#000;}
+.hours-remaining .calc-value {font-size:18px;color:#9C27B0;}
 .finish-time {width:100%;padding:12px 16px;border-radius:8px;position:relative;}
 .finish-time-content {display:flex;align-items:center;}
 .period-label {width:40px;font-size:10px;font-weight:bold;}
