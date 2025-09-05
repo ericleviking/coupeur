@@ -211,7 +211,7 @@ body.with-numpad {
 </div>
 
 <!-- Coupe Manquante -->
-<div class="coupe-manquante-section">
+<div class="coupe-manquante-section" id="coupeManquanteSection">
 <div class="section-header"><span class="icon">➕</span><div class="section-title">COUPE MANQUANTE</div></div>
 <div class="coupe-inputs">
 <div class="coupe-input-group"><div class="coupe-input-label">Duites coupées</div><input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe..." readonly></div>
@@ -254,16 +254,24 @@ let activeInput = null;
 });
 
 // Numpad fonctions
-function showNumpad() {
-  document.getElementById('numpad').style.display = 'block';
-  document.body.classList.add('with-numpad');
-  // si un input est actif, on le fait défiler en vue
+function showNumpad(){ 
+  const numpad = document.getElementById('numpad');
+  numpad.style.display = 'block'; 
+  document.body.classList.add('with-numpad'); 
+
   if (activeInput) {
-    setTimeout(() => {
-      activeInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 200); // petit délai pour laisser le padding s'appliquer
+    const coupeSection = document.getElementById('coupeManquanteSection');
+    if (coupeSection && coupeSection.contains(activeInput)) {
+      setTimeout(() => {
+        coupeSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'   // aligne le bloc bleu en haut de l’écran
+        });
+      }, 300);
+    }
   }
 }
+
 function closeNumpad(){ 
   document.getElementById('numpad').style.display = 'none'; 
   document.body.classList.remove('with-numpad'); 
