@@ -104,7 +104,22 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 .numpad-btn:active {
   transform: scale(1.2);
   background: #eee;
+
+
 }
+
+/* Affecte seulement le chiffre affiché quand la liste est fermée */
+.dropdown-big-display {
+  font-size: 20px;     /* 🔥 plus gros que le 12px actuel */
+  font-weight: bold;   /* renforce la lisibilité */
+}
+
+/* Les options du menu déroulant gardent leur taille normale */
+.dropdown-big-display option {
+  font-size: 12px;
+  font-weight: normal;
+}
+
 </style>
 </head>
 <body>
@@ -133,7 +148,7 @@ body {font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f5
 <div class="calc-row">
 <div class="calc-item piques"><div class="calc-label">Piques restantes</div><div class="calc-value" id="piquesRestantes">0</div></div>
 <div class="calc-item cadence"><div class="calc-label">Cadence</div>
-<select class="dropdown" id="cadenceSelect" onchange="updateCalculations()">
+<select class="dropdown dropdown-big-display" id="cadenceSelect" onchange="updateCalculations()">
     <option value="2000">2000 (120)</option>
     <option value="1900">1900 (114)</option>
     <option value="1850">1850 (111)</option>
