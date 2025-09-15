@@ -145,34 +145,44 @@
     .footer-title { display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
     .footer-title .icon { margin-right: 8px; }
 
-    /* --- SNACKBAR (popup message) --- */
-    .snackbar {
-      position: fixed;
-      bottom: 20px; left: 20px; right: 20px;
-      padding: 16px; border-radius: 8px;
-      color: white; font-weight: bold;
-      z-index: 1000; display: none;
-      text-align: center; opacity: 0;
-    }
-    .snackbar.success { background: #4CAF50; }
-    .snackbar.warning { background: #FF9800; }
+/* SNACKBAR (pop-up en bas) */
+.snackbar {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  padding: 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  z-index: 1000;
+  display: none;
+  text-align: center;
+}
 
-    .snackbar.show {
-      display: block;
-      animation: slideUp 0.4s ease forwards;
-    }
-    .snackbar.hide {
-      animation: fadeOut 0.4s ease forwards;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to   { transform: translateY(0); opacity: 1; }
-    }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to   { opacity: 0; }
-    }
+.snackbar.success { background: #4CAF50; }
+.snackbar.warning { background: #FF9800; }
 
+.snackbar.show {
+  display: block;
+  animation: slideUp 0.4s ease forwards;
+}
+
+.snackbar.hide {
+  animation: slideDownFade 0.4s ease forwards;
+}
+
+/* Apparition */
+@keyframes slideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+/* Disparition */
+@keyframes slideDownFade {
+  from { transform: translateY(0); opacity: 1; }
+  to   { transform: translateY(100%); opacity: 0; }
+}
     /* --- NUMPAD --- */
     #numpad {
       display: none; position: fixed; bottom: 0; left: 0;
@@ -212,114 +222,364 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <div class="app-header">
-    <span class="icon">✂️</span>
-    <span>Coupeur - Belt-Tech</span>
-  </div>
+<div class="app-header"><span class="icon">✂️</span><span>Coupeur - Belt-Tech</span></div>
 
-  <div class="container">
-    <!-- INPUTS -->
-    <div class="input-section">
-      <div class="input-card feuille">
-        <div class="card-header"><span class="icon">✏️</span><div class="card-title">FEUILLE</div></div>
-        <input type="number" id="handInput" class="input-field" placeholder="Prochaine coupe..." readonly>
-        <button class="btn feuille secondary" onclick="clearInput('hand')"><span>🔄</span>Reset</button>
-      </div>
+<div class="container">
+<!-- Feuille et Métier -->
+<div class="input-section">
+<div class="input-card feuille">
+<div class="card-header"><span class="icon">✏️</span><div class="card-title">FEUILLE</div></div>
+<input type="number" id="handInput" class="input-field" placeholder="Prochaine coupe..." readonly>
+<button class="btn feuille secondary" onclick="clearInput('hand')"><span>🔄</span>Reset</button>
+</div>
 
-      <div class="input-card metier">
-        <div class="card-header"><span class="icon">⚙️</span><div class="card-title">MÉTIER</div></div>
-        <input type="number" id="machineInput" class="input-field" placeholder="Piques..." readonly>
-        <button class="btn metier secondary" onclick="clearInput('machine')"><span>🔄</span>Reset</button>
-      </div>
-    </div>
+<div class="input-card metier">
+<div class="card-header"><span class="icon">⚙️</span><div class="card-title">MÉTIER</div></div>
+<input type="number" id="machineInput" class="input-field" placeholder="Piques..." readonly>
+<button class="btn metier secondary" onclick="clearInput('machine')"><span>🔄</span>Reset</button>
+</div>
+</div>
 
-    <!-- CALCULS -->
-    <div class="calculations-section">
-      <div class="section-header"><span class="icon">📊</span><div class="section-title">CALCULS DE COUPE</div></div>
-      <div class="calc-row">
-        <div class="calc-item piques">
-          <div class="calc-label">Piques restantes</div>
-          <div class="calc-value" id="piquesRestantes">0</div>
-        </div>
-        <div class="calc-item cadence">
-          <div class="calc-label">Cadence</div>
-          <select class="dropdown dropdown-big-display" id="cadenceSelect" onchange="updateCalculations()">
-            <option value="2000">2000 (120)</option>
-            <option value="1900">1900 (114)</option>
-            <option value="1850">1850 (111)</option>
-            <option value="1800">1800 (108)</option>
-            <option value="1750">1750 (105)</option>
-            <option value="1700" selected>1700 (102)</option>
-            <option value="1650">1650 (99)</option>
-            <option value="1600">1600 (96)</option>
-            <option value="1500">1500 (90)</option>
-            <option value="1400">1400 (84)</option>
-            <option value="1300">1300 (78)</option>
-            <option value="1150">1150 (69)</option>
-            <option value="1000">1000 (60)</option>
-            <option value="900">900 (54)</option>
-            <option value="800">800 (48)</option>
-            <option value="750">750 (45)</option>
-            <option value="700">700 (42)</option>
-            <option value="450">450 (27)</option>
-            <option value="200">200 (12)</option>
-            <option value="165">165 (9)</option>
-          </select>
-        </div>
-      </div>
+<!-- Calculations section -->
+<div class="calculations-section">
+<div class="section-header"><span class="icon">📊</span><div class="section-title">CALCULS DE COUPE</div></div>
+<div class="calc-row">
+<div class="calc-item piques"><div class="calc-label">Piques restantes</div><div class="calc-value" id="piquesRestantes">0</div></div>
+<div class="calc-item cadence"><div class="calc-label">Cadence</div>
+<select class="dropdown dropdown-big-display" id="cadenceSelect" onchange="updateCalculations()">
+    <option value="2000">2000 (120)</option>
+    <option value="1900">1900 (114)</option>
+    <option value="1850">1850 (111)</option>
+    <option value="1800">1800 (108)</option>
+    <option value="1750">𝟏𝟕𝟓𝟎 (𝟏𝟎𝟓)</option>
+    <option value="1700" selected>𝟏𝟕𝟎𝟎 (𝟏𝟎𝟐)</option>
+    <option value="1650">1650 (99)</option>
+    <option value="1600">𝟏𝟔𝟎𝟎 (𝟗𝟔)</option>
+    <option value="1500">𝟏𝟓𝟎𝟎 (𝟗𝟎)</option>
+    <option value="1400">1400 (84)</option>
+    <option value="1300">1300 (78)</option>
+    <option value="1150">1150 (69)</option>
+    <option value="1000">1000 (60)</option>
+    <option value="900">𝟗𝟎𝟎 (𝟓𝟒)</option>
+    <option value="800">800 (48)</option>
+    <option value="750">750 (45)</option>
+    <option value="700">700 (42)</option>
+    <option value="450">450 (27)</option>
+    <option value="200">200 (12)</option>
+    <option value="165">165 (9)</option>
+</select>
+</div>
+</div>
 
-      <div class="hours-remaining">
-        <div class="calc-label">Heures restantes</div>
-        <div class="calc-value" id="heuresRestantes">0,00</div>
-      </div>
+<div class="hours-remaining"><div class="calc-label">Heures restantes</div><div class="calc-value" id="heuresRestantes">0,00</div></div>
+<div class="finish-time" id="finishTimeContainer">
+<div class="finish-time-content"><div class="period-label" id="periodLabel"></div>
+<div class="finish-time-center"><div class="calc-label">Heure de coupe</div><div class="time-value" id="heureCoupe">-- h --</div></div>
+<div class="finish-time-spacer"></div></div></div>
+</div>
 
-      <div class="finish-time" id="finishTimeContainer">
-        <div class="finish-time-content">
-          <div class="period-label" id="periodLabel"></div>
-          <div class="finish-time-center">
-            <div class="calc-label">Heure de coupe</div>
-            <div class="time-value" id="heureCoupe">-- h --</div>
-          </div>
-          <div class="finish-time-spacer"></div>
-        </div>
-      </div>
-    </div>
+<!-- Coupe Manquante -->
+<div class="coupe-manquante-section" id="coupeManquanteSection">
+<div class="section-header"><span class="icon">➕</span><div class="section-title">COUPE MANQUANTE</div></div>
+<div class="coupe-inputs">
+<div class="coupe-input-group"><div class="coupe-input-label">Duites coupées</div><input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe..." readonly></div>
+<div class="coupe-input-group"><div class="coupe-input-label">Duites/coupe</div><input type="number" id="duitesParCoupeInput" class="input-field" placeholder="Haut de feuille..." readonly></div>
+</div>
+<button class="btn blue" onclick="calculerCoupeManquante()" data-allow-numpad-close>
+  <span>📊</span>Calculer
+</button>
+<button class="btn blue secondary" onclick="resetCoupeManquante()" data-allow-numpad-close>
+  <span>🔄</span>Reset
+</button>
+</div>
 
-    <!-- COUPE MANQUANTE -->
-    <div class="coupe-manquante-section" id="coupeManquanteSection">
-      <div class="section-header"><span class="icon">➕</span><div class="section-title">COUPE MANQUANTE</div></div>
-      <div class="coupe-inputs">
-        <div class="coupe-input-group">
-          <div class="coupe-input-label">Duites coupées</div>
-          <input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe..." readonly>
-        </div>
-        <div class="coupe-input-group">
-          <div class="coupe-input-label">Duites/coupe</div>
-          <input type="number" id="duitesParCoupeInput" class="input-field" placeholder="Haut de feuille..." readonly>
-        </div>
-      </div>
-      <button class="btn blue" onclick="calculerCoupeManquante()"><span>📊</span>Calculer</button>
-      <button class="btn blue secondary" onclick="resetCoupeManquante()"><span>🔄</span>Reset</button>
-    </div>
+<!-- Footer -->
+<div class="footer"><div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.3</span></div><div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div></div>
+</div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.3</span></div>
-      <div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div>
-    </div>
-  </div>
+<!-- Snackbar -->
+<div class="snackbar" id="snackbar"></div>
 
-  <!-- SNACKBAR -->
-  <div class="snackbar" id="snackbar"></div>
+<!-- Numpad -->
+<div id="numpad">
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('7')">7</button><button class="numpad-btn" onclick="appendNumpad('8')">8</button><button class="numpad-btn" onclick="appendNumpad('9')">9</button></div>
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('4')">4</button><button class="numpad-btn" onclick="appendNumpad('5')">5</button><button class="numpad-btn" onclick="appendNumpad('6')">6</button></div>
+  <div class="numpad-row"><button class="numpad-btn" onclick="appendNumpad('1')">1</button><button class="numpad-btn" onclick="appendNumpad('2')">2</button><button class="numpad-btn" onclick="appendNumpad('3')">3</button></div>
+  <div class="numpad-row"><button class="numpad-btn special enter" onclick="backspaceNumpad()">←</button><button class="numpad-btn" onclick="appendNumpad('0')">0</button><button class="numpad-btn special" onclick="closeNumpad()">✔</button></div>
+</div>
 
-  <!-- NUMPAD -->
-  <div id="numpad">
-    <div class="numpad-row">
-      <button class="numpad-btn" onclick="appendNumpad('7')">7</button>
-      <button class="numpad-btn" onclick="appendNumpad('8')">8</button>
-      <button class="numpad-btn" onclick="appendNumpad('9')">9</button>
-    </div>
-    <div class="numpad-row">
-      <button class="numpad-btn" onclick="appendNumpad('4')">4</button>
-      <button
+<script>
+const optionValues = {
+  '2000':120,'1900':114,'1850':111,'1800':108,'1750':105,'1700':102,
+  '1650':99,'1600':96,'1500':90,'1400':84,'1300':78,'1150':69,
+  '1000':60,'900':54,'800':48,'750':45,'700':42,'450':27,'200':12,'165':9
+};
+
+// Inputs
+let activeInput = null;
+['handInput','machineInput','duitesCoupeesInput','duitesParCoupeInput'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('focus', () => {
+    activeInput = el;
+    showNumpad();
+  });
+});
+// Pour les boutons "Calculer" et "Reset" : fermer le numpad APRES que leur onclick se soit exécuté.
+// On laisse donc le mousedown global IGNORER ces boutons, puis on ferme via setTimeout après le click.
+document.querySelectorAll('[data-allow-numpad-close]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // ferme le numpad juste après (permet à l'onclick inline d'être exécuté en premier)
+    setTimeout(() => {
+      if (activeInput) closeNumpad();
+    }, 0);
+  });
+});
+// Numpad fonctions
+function showNumpad(){ 
+  const numpad = document.getElementById('numpad');
+  numpad.style.display = 'block'; 
+  document.body.classList.add('with-numpad'); 
+
+  if (activeInput) {
+    const coupeSection = document.getElementById('coupeManquanteSection');
+    if (coupeSection && coupeSection.contains(activeInput)) {
+      setTimeout(() => {
+        coupeSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'   // aligne le bloc bleu en haut de l’écran
+        });
+      }, 300);
+    }
+  }
+}
+
+function closeNumpad(){ 
+  document.getElementById('numpad').style.display = 'none'; 
+  document.body.classList.remove('with-numpad'); 
+  activeInput = null; 
+}
+function appendNumpad(val){ if(!activeInput) return; activeInput.value += val; updateCalculations(); }
+function backspaceNumpad(){ if(!activeInput) return; activeInput.value = activeInput.value.slice(0,-1); updateCalculations(); }
+
+// Calculs
+function updateCalculations(){
+  const handValue = parseInt(document.getElementById('handInput').value) || 0;
+  const machineValue = parseInt(document.getElementById('machineInput').value) || 0;
+  const selectedCadence = document.getElementById('cadenceSelect').value;
+  const piquesRestantes = handValue - machineValue;
+  document.getElementById('piquesRestantes').textContent = piquesRestantes;
+  
+  let nombreHeures = 0;
+  if(piquesRestantes > 0){ nombreHeures = piquesRestantes / optionValues[selectedCadence]; }
+  document.getElementById('heuresRestantes').textContent = nombreHeures.toFixed(2).replace('.',',');
+  updateFinishTime(nombreHeures);
+}
+
+function updateFinishTime(nombreHeures) {
+  const finishTimeContainer = document.getElementById('finishTimeContainer');
+  const periodLabel = document.getElementById('periodLabel');
+  const heureCoupeEl = document.getElementById('heureCoupe');
+
+  if (nombreHeures <= 0) {
+    finishTimeContainer.className = 'finish-time purple-bg';
+    periodLabel.textContent = '';
+    heureCoupeEl.textContent = '-- h --';
+    heureCoupeEl.className = 'time-value';
+    return;
+  }
+
+  const maintenant = new Date();
+  const heures = Math.floor(nombreHeures);
+  const minutes = Math.round((nombreHeures - heures) * 60);
+  const heureFin = new Date(maintenant.getTime() + (heures * 60 + minutes) * 60000);
+
+  const heureFormatee = heureFin.getHours().toString().padStart(2, '0') +
+    ' h ' +
+    heureFin.getMinutes().toString().padStart(2, '0');
+  heureCoupeEl.textContent = heureFormatee;
+
+  const heure = heureFin.getHours();
+
+  // Définir la limite de fin de journée (07h)
+  let finDeJournee;
+  if (maintenant.getHours() < 7) {
+    // On est dans le shift de nuit → limite = aujourd'hui 07h
+    finDeJournee = new Date(
+      maintenant.getFullYear(),
+      maintenant.getMonth(),
+      maintenant.getDate(),
+      7, 0, 0
+    );
+  } else {
+    // On est dans le jour ou le soir → limite = demain 07h
+    finDeJournee = new Date(
+      maintenant.getFullYear(),
+      maintenant.getMonth(),
+      maintenant.getDate() + 1,
+      7, 0, 0
+    );
+  }
+
+  let shouldStrike = false;
+
+if (heureFin >= finDeJournee) {
+  // Dépasse la limite → rouge barré
+  finishTimeContainer.className = 'finish-time red-bg';
+  shouldStrike = true;
+
+  // Trouver quand même la période réelle du résultat
+  if (heure >= 7 && heure < 15) {
+    periodLabel.textContent = 'JOUR';
+  } else if (heure >= 15 && heure < 23) {
+    periodLabel.textContent = 'SOIR';
+  } else {
+    periodLabel.textContent = 'NUIT';
+  }
+
+} else {
+  // Encore dans la journée courante → appliquer les couleurs normales
+  if (heure >= 7 && heure < 15) {
+    finishTimeContainer.className = 'finish-time green-bg';
+    periodLabel.textContent = 'JOUR';
+  } else if (heure >= 15 && heure < 23) {
+    finishTimeContainer.className = 'finish-time orange-bg';
+    periodLabel.textContent = 'SOIR';
+  } else {
+    finishTimeContainer.className = 'finish-time blue-bg';
+    periodLabel.textContent = 'NUIT';
+  }
+}
+
+
+  heureCoupeEl.className = shouldStrike ? 'time-value strikethrough' : 'time-value';
+}
+
+
+
+function clearInput(type){
+  if(type==='hand') document.getElementById('handInput').value='';
+  else document.getElementById('machineInput').value='';
+  updateCalculations();
+}
+
+function calculerCoupeManquante() {
+    const duitesCoupees = parseInt(document.getElementById('duitesCoupeesInput').value) || 0;
+    const duitesParCoupe = parseInt(document.getElementById('duitesParCoupeInput').value) || 0;
+
+    // Fermer le numpad immédiatement
+    closeNumpad();
+
+    if (duitesCoupees > 0 && duitesParCoupe > 0) {
+        const total = duitesCoupees + duitesParCoupe;
+
+        // Mettre à jour le champ Feuille
+        document.getElementById('handInput').value = total.toString();
+        document.getElementById('machineInput').value = '';
+
+        // Vider les champs COUPE MANQUANTE
+        document.getElementById('duitesCoupeesInput').value = '';
+        document.getElementById('duitesParCoupeInput').value = '';
+
+        // Recalculer
+        updateCalculations();
+
+        // Monter la page vers le champ Feuille
+        document.getElementById('handInput').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // Afficher notification
+        showSnackbar(`✅ Total calculé: ${total} ajouté à la Feuille`, 'success');
+    } else {
+        // Si valeurs invalides → juste notification, pas de scroll
+        showSnackbar('⚠️ Veuillez entrer des valeurs valides dans les deux champs', 'warning');
+    }
+}
+
+
+
+function resetCoupeManquante() {
+    const duitesCoupeesInput = document.getElementById('duitesCoupeesInput');
+    const duitesParCoupeInput = document.getElementById('duitesParCoupeInput');
+
+    if (activeInput === duitesCoupeesInput) {
+        duitesCoupeesInput.value = '';
+    } else if (activeInput === duitesParCoupeInput) {
+        duitesParCoupeInput.value = '';
+    } else {
+        // Aucun champ actif → vider les deux
+        duitesCoupeesInput.value = '';
+        duitesParCoupeInput.value = '';
+    }
+}
+
+function showSnackbar(msg, type = 'success', duration = 2000) {
+  const el = document.getElementById('snackbar');
+
+  // nettoyage si un snackbar était déjà en train d'être montré
+  if (el._hideTimer) {
+    clearTimeout(el._hideTimer);
+    el._hideTimer = null;
+  }
+
+  // texte + classes de base
+  el.textContent = msg;
+  el.classList.remove('show', 'hide', 'success', 'warning', 'error', 'info');
+  el.classList.add(type);
+
+  // rendre visible et forcer reflow pour relancer animation si nécessaire
+  el.style.display = 'block';
+  void el.offsetWidth; // <-- force reflow
+
+  // lancer l'animation d'entrée
+  el.classList.add('show');
+
+  // timer pour cacher ensuite
+  el._hideTimer = setTimeout(() => {
+    // remplacer show par hide (l'animation de sortie jouera)
+    el.classList.remove('show');
+    el.classList.add('hide');
+
+    // une fois la sortie finie, masquer définitivement et nettoyer classes
+    const onAnimEnd = () => {
+      el.style.display = 'none';
+      el.classList.remove('hide', type);
+      el.removeEventListener('animationend', onAnimEnd);
+    };
+    el.addEventListener('animationend', onAnimEnd, { once: true });
+  }, duration);
+}
+
+// Scroll vers le haut et ferme le numpad
+function scrollToTop(){
+  document.activeElement.blur(); // retire le focus
+  closeNumpad();                 // ferme le numpad
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// Fermer le numpad si clic ailleurs (fix pour champs bas)
+// Exception : on ne ferme PAS immédiatement si le mousedown est sur un bouton marqué data-allow-numpad-close
+document.addEventListener('mousedown', (e) => {
+  const np = document.getElementById('numpad');
+
+  // 1) si clic dans le numpad => on ne ferme pas
+  if (e.target.closest && e.target.closest('#numpad')) return;
+
+  // 2) si clic dans un input => on ne ferme pas (on veut permettre la saisie)
+  if (e.target.closest && (e.target.closest('input') || e.target.closest('.input-field'))) return;
+
+  // 3) si mousedown sur un bouton "autorisé" dans Coupe Manquante (Calculer / Reset),
+  //    on NE FERME PAS ici : le bouton a son propre handler click qui fermera après.
+  if (e.target.closest && e.target.closest('[data-allow-numpad-close]')) {
+    return;
+  }
+
+  // 4) sinon : comportement normal (fermer si on avait un input actif et le clic est à l'extérieur)
+  if (activeInput && (!np || !np.contains(e.target))) {
+    closeNumpad();
+  }
+});
+
+updateCalculations();
+</script>
+
+</body>
+</html>
