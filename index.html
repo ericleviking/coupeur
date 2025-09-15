@@ -1,130 +1,325 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Coupeur - Belt-Tech</title>
-<link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
-<link rel="shortcut icon" href="icons/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Coupeur" />
-<link rel="manifest" href="icons/site.webmanifest" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coupeur - Belt-Tech</title>
+  <link rel="icon" type="image/png" href="icons/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
+  <link rel="shortcut icon" href="icons/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Coupeur" />
+  <link rel="manifest" href="icons/site.webmanifest" />
 
-<style>
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-}
+    .app-header {
+      background: #2196F3;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .app-header .icon { margin-right: 8px; font-size: 20px; }
 
-/* HEADER */
-.app-header {
-  background: #2196F3;
-  color: white;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
+    .container { padding: 20px; max-width: 800px; margin: 0 auto; padding-bottom: 0; }
 
-.app-header .icon {
-  margin-right: 8px;
-  font-size: 20px;
-}
+    /* --- INPUTS --- */
+    .input-section { display: flex; gap: 16px; margin-bottom: 24px; }
+    .input-card {
+      flex: 1; padding: 16px; border: 2px solid; border-radius: 12px; background: white;
+    }
+    .input-card.feuille { border-color: #FF9800; background: #FFF3E0; }
+    .input-card.metier { border-color: #4CAF50; background: #E8F5E0; }
 
-/* CONTAINER */
-.container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  padding-bottom: 0;
-}
+    .card-header { display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+    .card-header .icon { margin-right: 8px; font-size: 18px; }
+    .card-title { font-size: 14px; font-weight: bold; text-align: center; flex: 1; }
+    .feuille .card-title { color: #F57C00; }
+    .metier .card-title { color: #388E3C; }
 
-/* SNACKBAR */
-.snackbar {
-  position: fixed;
-  bottom: 20px;   /* 🔥 affichage en bas */
-  left: 20px;
-  right: 20px;
-  padding: 16px;
-  border-radius: 8px;
-  color: white;
-  font-weight: bold;
-  z-index: 1000;
-  display: none;
-  text-align: center;
-}
+    .input-field {
+      width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px;
+      font-size: 16px; font-weight: bold; text-align: center; background: white;
+      margin-bottom: 12px;
+      white-space: normal; overflow: visible; text-overflow: clip;
+    }
+    .input-field::placeholder {
+      font-weight: normal; font-size: 14px; white-space: nowrap;
+    }
 
-.snackbar.success { background: #4CAF50; }
-.snackbar.warning { background: #FF9800; }
-.snackbar.error   { background: #DC3545; }
-.snackbar.info    { background: #2196F3; }
+    .btn {
+      width: 100%; padding: 8px; border: none; border-radius: 4px;
+      font-size: 12px; font-weight: bold; color: white;
+      cursor: pointer; margin-bottom: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .btn.feuille { background: #FF9800; }
+    .btn.feuille.secondary { background: #FFB74D; }
+    .btn.metier { background: #4CAF50; }
+    .btn.metier.secondary { background: #81C784; }
+    .btn.blue { background: #2196F3; }
+    .btn.blue.secondary { background: #64B5F6; }
 
-.snackbar.show {
-  display: block;
-  animation: slideUp 0.3s ease forwards;
-}
+    /* --- CALCULS --- */
+    .calculations-section {
+      background: #F3E5F5; border: 2px solid #9C27B0;
+      border-radius: 12px; padding: 16px; margin-bottom: 24px;
+    }
+    .section-header { display: flex; align-items: center; margin-bottom: 16px; }
+    .section-header .icon { margin-right: 8px; color: #7B1FA2; font-size: 18px; }
+    .section-title { font-size: 16px; font-weight: bold; color: #7B1FA2; }
 
-.snackbar.hide {
-  animation: slideDown 0.3s ease forwards;
-}
+    .calc-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .calc-item {
+      padding: 12px 16px; background-color: white;
+      border: 1px solid #CE93D8; border-radius: 8px;
+      text-align: center; display: flex; flex-direction: column;
+    }
+    .calc-item.piques { flex: 4; }
+    .calc-item.cadence { flex: 4; }
 
-/* animations */
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to   { transform: translateY(0); opacity: 1; }
-}
+    .calc-label { font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .calc-value { font-size: 20px; font-weight: bold; color: #9C27B0; }
 
-@keyframes slideDown {
-  from { transform: translateY(0); opacity: 1; }
-  to   { transform: translateY(100%); opacity: 0; }
-}
+    .dropdown {
+      width: 100%; padding: 6px 4px; border: 1px solid #CE93D8;
+      border-radius: 4px; font-size: 12px; background: white; text-align: center;
+    }
+    .dropdown-big-display { font-size: 20px; font-weight: bold; }
+    .dropdown-big-display option { font-size: 12px; font-weight: normal; }
 
-/* ... (tout le reste de tes styles inchangés) ... */
-</style>
+    .hours-remaining {
+      width: 100%; padding: 12px 16px; background: white;
+      border: 1px solid #CE93D8; border-radius: 8px;
+      text-align: center; margin-bottom: 12px;
+    }
+    .hours-remaining .calc-label { color: #000; }
+    .hours-remaining .calc-value { font-size: 18px; color: #9C27B0; }
+
+    .finish-time { width: 100%; padding: 12px 16px; border-radius: 8px; position: relative; }
+    .finish-time-content { display: flex; align-items: center; }
+    .period-label { width: 40px; font-size: 24px; font-weight: bold; }
+    .finish-time-center { flex: 1; text-align: center; }
+    .finish-time-center .calc-label { font-size: 12px; font-weight: bold; }
+    .finish-time-center .time-value { font-size: 24px; font-weight: bold; }
+    .finish-time-spacer { width: 40px; }
+    .strikethrough { text-decoration: line-through; text-decoration-thickness: 3px; }
+
+    .green-bg { background: #2e7d32; color: white; }  /* Jour plus foncé */
+    .orange-bg { background: #FF9800; color: black; }
+    .red-bg { background: #DC3545; color: white; }
+    .purple-bg { background: #7B1FA2; color: white; }
+    .blue-bg { background: #2196F3; color: white; }
+
+    /* --- COUPE MANQUANTE --- */
+    .coupe-manquante-section {
+      background: #E3F2FD; border: 2px solid #2196F3;
+      border-radius: 12px; padding: 16px; margin-bottom: 24px;
+    }
+    .coupe-manquante-section .section-header .icon { color: #1976D2; }
+    .coupe-manquante-section .section-title { color: #1976D2; }
+    .coupe-inputs { display: flex; gap: 16px; margin-bottom: 16px; }
+    .coupe-input-group { flex: 1; }
+    .coupe-input-label {
+      font-size: 12px; font-weight: bold; color: #1976D2;
+      margin-bottom: 8px; text-align: center;
+    }
+
+    /* --- FOOTER --- */
+    .footer {
+      background: #E3F2FD; border-radius: 8px;
+      padding: 12px; text-align: center; margin-bottom: 70px;
+    }
+    .footer-title { display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+    .footer-title .icon { margin-right: 8px; }
+
+    /* --- SNACKBAR (popup message) --- */
+    .snackbar {
+      position: fixed;
+      bottom: 20px; left: 20px; right: 20px;
+      padding: 16px; border-radius: 8px;
+      color: white; font-weight: bold;
+      z-index: 1000; display: none;
+      text-align: center; opacity: 0;
+    }
+    .snackbar.success { background: #4CAF50; }
+    .snackbar.warning { background: #FF9800; }
+
+    .snackbar.show {
+      display: block;
+      animation: slideUp 0.4s ease forwards;
+    }
+    .snackbar.hide {
+      animation: fadeOut 0.4s ease forwards;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    /* --- NUMPAD --- */
+    #numpad {
+      display: none; position: fixed; bottom: 0; left: 0;
+      width: 100%; padding: 12px; background: #BA68C8;
+      box-shadow: 0 -2px 12px rgba(0,0,0,0.3);
+      border-top-left-radius: 16px; border-top-right-radius: 16px;
+      z-index: 10000;
+    }
+    .numpad-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+    .numpad-btn {
+      flex: 1; padding: 18px; border: none; border-radius: 12px;
+      font-size: 26px; font-weight: bold; text-align: center;
+      cursor: pointer; user-select: none;
+      color: #9C27B0; background: #FFFFFF;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  filter 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+    .numpad-btn.special { background: #4CAF50; color: white; }
+    .numpad-btn.special.enter { background: #FF9800; color: white; }
+    .numpad-btn:active {
+      transform: scale(1.15); filter: brightness(1.2);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.25);
+    }
+    body.with-numpad { padding-bottom: 280px; }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width:480px){
+      .container{padding:10px;}
+      .input-section{gap:10px;}
+      .calc-row{gap:8px;}
+      .coupe-inputs{gap:10px;}
+      .dropdown{font-size:9px;padding:4px 2px;}
+      .calc-label{font-size:11px;}
+    }
+  </style>
 </head>
 <body>
 
-<!-- Header -->
-<div class="app-header">
-  <span class="icon">✂️</span>
-  <span>Coupeur - Belt-Tech</span>
-</div>
+  <!-- HEADER -->
+  <div class="app-header">
+    <span class="icon">✂️</span>
+    <span>Coupeur - Belt-Tech</span>
+  </div>
 
-<div class="container">
-  <!-- ... ton contenu (feuille, métier, calculs, etc.) ... -->
-</div>
+  <div class="container">
+    <!-- INPUTS -->
+    <div class="input-section">
+      <div class="input-card feuille">
+        <div class="card-header"><span class="icon">✏️</span><div class="card-title">FEUILLE</div></div>
+        <input type="number" id="handInput" class="input-field" placeholder="Prochaine coupe..." readonly>
+        <button class="btn feuille secondary" onclick="clearInput('hand')"><span>🔄</span>Reset</button>
+      </div>
 
-<!-- Snackbar -->
-<div class="snackbar" id="snackbar"></div>
+      <div class="input-card metier">
+        <div class="card-header"><span class="icon">⚙️</span><div class="card-title">MÉTIER</div></div>
+        <input type="number" id="machineInput" class="input-field" placeholder="Piques..." readonly>
+        <button class="btn metier secondary" onclick="clearInput('machine')"><span>🔄</span>Reset</button>
+      </div>
+    </div>
 
-<script>
-function showSnackbar(msg, type) {
-  const snackbar = document.getElementById('snackbar');
-  snackbar.textContent = msg;
-  snackbar.className = `snackbar ${type} show`;
+    <!-- CALCULS -->
+    <div class="calculations-section">
+      <div class="section-header"><span class="icon">📊</span><div class="section-title">CALCULS DE COUPE</div></div>
+      <div class="calc-row">
+        <div class="calc-item piques">
+          <div class="calc-label">Piques restantes</div>
+          <div class="calc-value" id="piquesRestantes">0</div>
+        </div>
+        <div class="calc-item cadence">
+          <div class="calc-label">Cadence</div>
+          <select class="dropdown dropdown-big-display" id="cadenceSelect" onchange="updateCalculations()">
+            <option value="2000">2000 (120)</option>
+            <option value="1900">1900 (114)</option>
+            <option value="1850">1850 (111)</option>
+            <option value="1800">1800 (108)</option>
+            <option value="1750">1750 (105)</option>
+            <option value="1700" selected>1700 (102)</option>
+            <option value="1650">1650 (99)</option>
+            <option value="1600">1600 (96)</option>
+            <option value="1500">1500 (90)</option>
+            <option value="1400">1400 (84)</option>
+            <option value="1300">1300 (78)</option>
+            <option value="1150">1150 (69)</option>
+            <option value="1000">1000 (60)</option>
+            <option value="900">900 (54)</option>
+            <option value="800">800 (48)</option>
+            <option value="750">750 (45)</option>
+            <option value="700">700 (42)</option>
+            <option value="450">450 (27)</option>
+            <option value="200">200 (12)</option>
+            <option value="165">165 (9)</option>
+          </select>
+        </div>
+      </div>
 
-  setTimeout(() => {
-    snackbar.classList.remove('show');
-    snackbar.classList.add('hide');
-  }, 2000);
+      <div class="hours-remaining">
+        <div class="calc-label">Heures restantes</div>
+        <div class="calc-value" id="heuresRestantes">0,00</div>
+      </div>
 
-  // nettoyage après animation
-  snackbar.addEventListener('animationend', () => {
-    if (snackbar.classList.contains('hide')) {
-      snackbar.className = 'snackbar'; // reset
-    }
-  }, { once: true });
-}
-</script>
+      <div class="finish-time" id="finishTimeContainer">
+        <div class="finish-time-content">
+          <div class="period-label" id="periodLabel"></div>
+          <div class="finish-time-center">
+            <div class="calc-label">Heure de coupe</div>
+            <div class="time-value" id="heureCoupe">-- h --</div>
+          </div>
+          <div class="finish-time-spacer"></div>
+        </div>
+      </div>
+    </div>
 
-</body>
-</html>
+    <!-- COUPE MANQUANTE -->
+    <div class="coupe-manquante-section" id="coupeManquanteSection">
+      <div class="section-header"><span class="icon">➕</span><div class="section-title">COUPE MANQUANTE</div></div>
+      <div class="coupe-inputs">
+        <div class="coupe-input-group">
+          <div class="coupe-input-label">Duites coupées</div>
+          <input type="number" id="duitesCoupeesInput" class="input-field" placeholder="Dernière coupe..." readonly>
+        </div>
+        <div class="coupe-input-group">
+          <div class="coupe-input-label">Duites/coupe</div>
+          <input type="number" id="duitesParCoupeInput" class="input-field" placeholder="Haut de feuille..." readonly>
+        </div>
+      </div>
+      <button class="btn blue" onclick="calculerCoupeManquante()"><span>📊</span>Calculer</button>
+      <button class="btn blue secondary" onclick="resetCoupeManquante()"><span>🔄</span>Reset</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-title"><span class="icon">✂️</span><span style="font-weight:bold;font-size:14px;">Coupeur, version 1.3</span></div>
+      <div style="font-size:12px;font-weight:bold;">Programmé par Eric Delorme</div>
+    </div>
+  </div>
+
+  <!-- SNACKBAR -->
+  <div class="snackbar" id="snackbar"></div>
+
+  <!-- NUMPAD -->
+  <div id="numpad">
+    <div class="numpad-row">
+      <button class="numpad-btn" onclick="appendNumpad('7')">7</button>
+      <button class="numpad-btn" onclick="appendNumpad('8')">8</button>
+      <button class="numpad-btn" onclick="appendNumpad('9')">9</button>
+    </div>
+    <div class="numpad-row">
+      <button class="numpad-btn" onclick="appendNumpad('4')">4</button>
+      <button
