@@ -548,13 +548,6 @@ function showSnackbar(msg, type = 'success', duration = 4000) {
   }, duration);
 }
 
-// Scroll vers le haut et ferme le numpad
-function scrollToTop(){
-  document.activeElement.blur(); // retire le focus
-  closeNumpad();                 // ferme le numpad
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
-
 // Fermer le numpad si clic ailleurs (fix pour champs bas)
 // Exception : on ne ferme PAS immédiatement si le mousedown est sur un bouton marqué data-allow-numpad-close
 document.addEventListener('mousedown', (e) => {
