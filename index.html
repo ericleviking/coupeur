@@ -68,12 +68,6 @@
       font-weight: normal; font-size: 14px; white-space: nowrap;
     }
 
-		#cadenceSelect {
-			font-size: 20px;
-			font-weight: bold;
-			padding: 6px 12px;
-		}
-
     .btn {
       width: 100%; padding: 8px; border: none; border-radius: 4px;
       font-size: 12px; font-weight: bold; color: white;
@@ -112,8 +106,28 @@
       width: 100%; padding: 6px 4px; border: 1px solid #CE93D8;
       border-radius: 4px; font-size: 12px; background: white; text-align: center;
     }
-    .dropdown-big-display { font-size: 20px; font-weight: bold; }
-    .dropdown-big-display option { font-size: 12px; font-weight: normal; }
+		
+		/* Style de base pour tous les selects */
+		.dropdown {
+			width: 100%;
+			padding: 6px 12px;
+			border: 1px solid #CE93D8;
+			border-radius: 4px;
+			background: white;
+			text-align: center;
+		}
+
+		/* Quand on veut un affichage "plus gros" */
+		.dropdown-big-display {
+			font-size: 20px;      /* le chiffre affiché */
+			font-weight: bold;
+		}
+
+		/* Les options DANS la liste déroulante */
+		.dropdown-big-display option {
+			font-size: 16px;      /* un peu plus petit que le chiffre affiché */
+			font-weight: normal;
+		}
 
     .hours-remaining {
       width: 100%; padding: 12px 16px; background: white;
