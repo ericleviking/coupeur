@@ -107,25 +107,17 @@
       border-radius: 4px; font-size: 12px; background: white; text-align: center;
     }
 		
-		/* Style de base pour tous les selects */
-		.dropdown {
-			width: 100%;
+		#cadenceSelect {
+			font-size: 20px;      /* gros chiffre visible partout */
+			font-weight: bold;
 			padding: 6px 12px;
 			border: 1px solid #CE93D8;
 			border-radius: 4px;
-			background: white;
 			text-align: center;
+			background: white;
 		}
-
-		/* Quand on veut un affichage "plus gros" */
-		.dropdown-big-display {
-			font-size: 20px;      /* le chiffre affiché */
-			font-weight: bold;
-		}
-
-		/* Les options DANS la liste déroulante */
-		.dropdown-big-display option {
-			font-size: 16px;      /* un peu plus petit que le chiffre affiché */
+		#cadenceSelect option {
+			font-size: 16px;      /* taille des options dans la liste */
 			font-weight: normal;
 		}
 
@@ -275,7 +267,7 @@
 <div class="calc-row">
 <div class="calc-item piques"><div class="calc-label">Piques restantes</div><div class="calc-value" id="piquesRestantes">0</div></div>
 <div class="calc-item cadence"><div class="calc-label">Cadence</div>
-<select class="dropdown dropdown-big-display" id="cadenceSelect" onchange="updateCalculations()">
+<select id="cadenceSelect" onchange="updateCalculations()">
     <option value="2000">2000 (120)</option>
     <option value="1900">1900 (114)</option>
     <option value="1850">1850 (111)</option>
